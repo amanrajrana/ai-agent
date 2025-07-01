@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  subject       String
+  department    String
+  experience    Int      // years of experience
+  qualifications String
+  classes       String[] // array of classes they teach
+  phone         String?
+  office        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("teachers")
+}
+
+model FeeStructure {
+  id          String   @id @default(cuid())
+  className   String   // e.g., "1st Year", "2nd Year", "B.Tech CSE"
+  year        String   // Academic year
+  tuitionFee  Float
+  labFee      Float?
+  libraryFee  Float?
+  examFee     Float?
+  otherFees   Float?
+  totalFee    Float
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("fee_structures")
+}
+
+model Syllabus {
+  id          String   @id @default(cuid())
+  course      String   // e.g., "B.Tech CSE"
+  year        String   // e.g., "1st Year"
+  semester    String   // e.g., "Semester 1"
+  subject     String
+  topics      String[] // array of topics
+  credits     Int
+  description String?
+  pdfUrl      String?  // link to syllabus PDF
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("syllabus")
+}
+
+model AdmissionProcess {
+  id          String   @id @default(cuid())
+  step        Int      // step number in the process
+  title       String
+  description String
+  requirements String[] // array of requirements
+  deadline    DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("admission_processes")
+}
+
+model ImportantLink {
+  id          String   @id @default(cuid())
+  title       String
+  url         String
+  description String
+  category    String   // e.g., "Academic", "Administrative", "Resources"
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("important_links")
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String   // e.g., "Admission", "Fees", "Academic"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}
+
+model SupportTicket {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  category    String        // e.g., "Academic", "Technical", "Administrative"
+  priority    TicketPriority @default(MEDIUM)
+  status      TicketStatus   @default(OPEN)
+  studentName String?
+  studentEmail String?
+  assignedTo  String?       // admin user ID or name
+  resolution  String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("support_tickets")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      UserRole @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
