@@ -23,7 +23,7 @@ model Teacher {
   phone          String?
   office         String?
   createdAt      DateTime  @default(now())
-  updatedAt      DateTime? @updatedAt
+  updatedAt      DateTime @updatedAt
 
   @@map("teachers")
 }
@@ -40,7 +40,7 @@ model FeeStructure {
   totalFee    Float
   description String?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  updatedAt   DateTime @updatedAt
 
   @@map("fee_structures")
 }
@@ -56,7 +56,7 @@ model Syllabus {
   description String?
   pdfUrl      String? // link to syllabus PDF
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  updatedAt   DateTime @updatedAt
 
   @@map("syllabus")
 }
@@ -70,7 +70,7 @@ model AdmissionProcess {
   deadline     DateTime?
   isActive     Boolean   @default(true)
   createdAt    DateTime  @default(now())
-  updatedAt    DateTime? @updatedAt
+  updatedAt    DateTime @updatedAt
 
   @@map("admission_processes")
 }
@@ -83,7 +83,7 @@ model ImportantLink {
   category    String // e.g., "Academic", "Administrative", "Resources"
   isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  updatedAt   DateTime @updatedAt
 
   @@map("important_links")
 }
@@ -95,7 +95,7 @@ model FAQ {
   category  String // e.g., "Admission", "Fees", "Academic"
   isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@map("faqs")
 }
@@ -112,7 +112,7 @@ model SupportTicket {
   assignedTo   String? // admin user ID or name
   resolution   String?
   createdAt    DateTime       @default(now())
-  updatedAt    DateTime?      @updatedAt
+  updatedAt    DateTime       @updatedAt
 
   @@map("support_tickets")
 }
@@ -121,9 +121,10 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String
+  password  String
   role      UserRole @default(ADMIN)
   createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }

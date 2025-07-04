@@ -61,6 +61,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch("/api/teachers")
       const data = await response.json()
+      console.log("Teachers fetched:", data)
       setTeachers(data)
     } catch (error) {
       console.error("Failed to fetch teachers:", error)
