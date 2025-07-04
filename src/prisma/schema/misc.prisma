@@ -1,0 +1,41 @@
+model ImportantLink {
+    id          String    @id @default(cuid())
+    title       String
+    url         String
+    description String
+    category    String // e.g., "Academic", "Administrative", "Resources"
+    isActive    Boolean   @default(true)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime? @updatedAt
+
+    @@map("important_links")
+}
+
+model FAQ {
+    id        String    @id @default(cuid())
+    question  String
+    answer    String
+    category  String // e.g., "Admission", "Fees", "Academic"
+    isActive  Boolean   @default(true)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+
+    @@map("faqs")
+}
+
+model SupportTicket {
+    id           String         @id @default(cuid())
+    title        String
+    description  String
+    category     String // e.g., "Academic", "Technical", "Administrative"
+    priority     TicketPriority @default(MEDIUM)
+    status       TicketStatus   @default(OPEN)
+    studentName  String?
+    studentEmail String?
+    assignedTo   String? // admin user ID or name
+    resolution   String?
+    createdAt    DateTime       @default(now())
+    updatedAt    DateTime?      @updatedAt
+
+    @@map("support_tickets")
+}

@@ -1,0 +1,31 @@
+model Faculty {
+    id            Int      @id @default(autoincrement())
+    name          String
+    contact_email String   @unique
+    education     String?
+    designation   String?
+    experience    Int? // in years
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    // Relations
+    userId         String?
+    User           User?            @relation(fields: [userId], references: [id])
+    FacultySubject FacultySubject[]
+
+    @@map("faculties")
+}
+
+model FacultySubject {
+    id        Int      @id @default(autoincrement())
+    facultyId Int
+    subjectId Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    Faculty Faculty @relation(fields: [facultyId], references: [id])
+    Subject Subject @relation(fields: [subjectId], references: [id])
+
+    @@map("faculty_subjects")
+}

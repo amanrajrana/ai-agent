@@ -1,0 +1,41 @@
+enum UserRole {
+    ADMIN
+    USER
+    TEACHER
+    STUDENT
+}
+
+enum PaperType {
+    THEORY
+    PRACTICAL
+    PROJECT
+    ELECTIVE
+}
+
+enum CourseType {
+    MCA
+    BCA
+}
+
+enum DegreeType {
+    BACHELORS
+    MASTERS
+}
+
+enum FacultyRole {
+    TEACHING
+    NON_TEACHING
+}
+
+enum TicketPriority {
+    LOW
+    MEDIUM
+    HIGH
+}
+
+enum TicketStatus {
+    OPEN
+    IN_PROGRESS
+    RESOLVED
+    CLOSED
+}
