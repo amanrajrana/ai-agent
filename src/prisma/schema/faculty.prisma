@@ -1,12 +1,14 @@
 model Faculty {
-    id            Int      @id @default(autoincrement())
-    name          String
-    contact_email String   @unique
-    education     String?
-    designation   String?
-    experience    Int? // in years
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+    id             Int      @id @default(autoincrement())
+    name           String
+    contact_email  String   @unique
+    qualification  String?
+    designation    String?
+    experience     Int? // in years
+    specialization String?
+    resumeUrl      String?
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
 
     // Relations
     userId         String?
@@ -17,11 +19,11 @@ model Faculty {
 }
 
 model FacultySubject {
-    id        Int      @id @default(autoincrement())
-    facultyId Int
+    id          Int      @id @default(autoincrement())
+    facultyId   Int
     subjectCode String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
     // Relations
     Faculty Faculty @relation(fields: [facultyId], references: [id])
