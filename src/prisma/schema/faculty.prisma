@@ -19,13 +19,13 @@ model Faculty {
 model FacultySubject {
     id        Int      @id @default(autoincrement())
     facultyId Int
-    subjectId Int
+    subjectCode String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     // Relations
     Faculty Faculty @relation(fields: [facultyId], references: [id])
-    Subject Subject @relation(fields: [subjectId], references: [id])
+    Subject Subject @relation(fields: [subjectCode], references: [code])
 
     @@map("faculty_subjects")
 }

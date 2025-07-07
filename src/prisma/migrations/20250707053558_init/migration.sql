@@ -35,28 +35,27 @@ CREATE TABLE "courses" (
 
 -- CreateTable
 CREATE TABLE "subjects" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
     "code" TEXT NOT NULL,
-    "description" TEXT,
+    "name" TEXT NOT NULL,
     "credits" INTEGER NOT NULL,
     "marks" INTEGER NOT NULL,
     "paperType" "PaperType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "textBook" TEXT[],
+    "semester" INTEGER NOT NULL,
     "courseId" "CourseType" NOT NULL,
 
-    CONSTRAINT "subjects_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "subjects_pkey" PRIMARY KEY ("code")
 );
 
 -- CreateTable
 CREATE TABLE "Unit" (
     "id" SERIAL NOT NULL,
-    "number" INTEGER NOT NULL,
+    "unitNumber" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "subjectId" INTEGER NOT NULL,
+    "subjectCode" TEXT NOT NULL,
 
     CONSTRAINT "Unit_pkey" PRIMARY KEY ("id")
 );
@@ -103,7 +102,7 @@ CREATE TABLE "faculties" (
 CREATE TABLE "faculty_subjects" (
     "id" SERIAL NOT NULL,
     "facultyId" INTEGER NOT NULL,
-    "subjectId" INTEGER NOT NULL,
+    "subjectCode" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -175,7 +174,10 @@ CREATE UNIQUE INDEX "courses_name_key" ON "courses"("name");
 CREATE UNIQUE INDEX "subjects_name_key" ON "subjects"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "subjects_code_key" ON "subjects"("code");
+CREATE UNIQUE INDEX "subjects_courseId_semester_code_key" ON "subjects"("courseId", "semester", "code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Unit_unitNumber_subjectCode_key" ON "Unit"("unitNumber", "subjectCode");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "fee_structures_courseId_semester_key" ON "fee_structures"("courseId", "semester");
@@ -190,7 +192,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 ALTER TABLE "subjects" ADD CONSTRAINT "subjects_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Unit" ADD CONSTRAINT "Unit_subjectId_fkey" FOREIGN KEY ("subjectId") REFERENCES "subjects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Unit" ADD CONSTRAINT "Unit_subjectCode_fkey" FOREIGN KEY ("subjectCode") REFERENCES "subjects"("code") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admission_processes" ADD CONSTRAINT "admission_processes_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -205,4 +207,4 @@ ALTER TABLE "faculties" ADD CONSTRAINT "faculties_userId_fkey" FOREIGN KEY ("use
 ALTER TABLE "faculty_subjects" ADD CONSTRAINT "faculty_subjects_facultyId_fkey" FOREIGN KEY ("facultyId") REFERENCES "faculties"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "faculty_subjects" ADD CONSTRAINT "faculty_subjects_subjectId_fkey" FOREIGN KEY ("subjectId") REFERENCES "subjects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "faculty_subjects" ADD CONSTRAINT "faculty_subjects_subjectCode_fkey" FOREIGN KEY ("subjectCode") REFERENCES "subjects"("code") ON DELETE RESTRICT ON UPDATE CASCADE;
