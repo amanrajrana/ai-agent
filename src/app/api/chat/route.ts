@@ -1,6 +1,6 @@
+import { availableTools } from "@/lib/tools";
 import { google } from "@ai-sdk/google";
 import { streamText, tool } from "ai";
-import { tools } from "@/lib/tools";
 
 export const maxDuration = 30;
 
@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     const result = streamText({
       model: google("gemini-2.5-flash"),
       messages,
+      maxSteps: 10,
       system: `You are a helpful AI assistant for a college department. You can help students and visitors with information about:
     - Teachers and their subjects, qualifications, contact details
     - Fee structures for different classes and years
@@ -23,13 +24,15 @@ export async function POST(req: Request) {
 
     Be friendly, helpful, and professional. Provide accurate information based on the data available through the tools.`,
       tools: {
-        getTeacherInfo: tool(tools.getTeacherInfo),
-        getFeeStructure: tool(tools.getFeeStructure),
-        getSyllabusInfo: tool(tools.getSyllabusInfo),
-        getAdmissionProcess: tool(tools.getAdmissionProcess),
-        getImportantLinks: tool(tools.getImportantLinks),
-        getFAQs: tool(tools.getFAQs),
-        createSupportTicket: tool(tools.createSupportTicket),
+        // getTeacherInfo: tool(tools.createSupportTicket),
+        // getFeeStructure: tool(tools.getFeeStructure),
+        // getSyllabus: tool(tools.getSyllabus),
+        // getAdmissionProcess: tool(tools.getAdmissionProcess),
+        // getImportantLinks: tool(tools.getImportantLinks),
+        getCoursesOffered: tool(availableTools.getCoursesOffered),
+        getSubjectsByCourseId: tool(availableTools.getSubjectsByCourseId),
+        // createSupportTicket: tool(tools.createSupportTicket),
+        // getFacultyInfo: tool(tools.getFacultyInfo),
       },
     });
 

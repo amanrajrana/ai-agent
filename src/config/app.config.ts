@@ -4,5 +4,5 @@ export default {
   version: "1.0.0",
   author: "Your Name",
   license: "MIT",
-  activeDbSeed: true,
+  activeDbSeed: false,
 };
