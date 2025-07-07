@@ -1,48 +1,71 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
-import DefaultPrompt from "./defaultPrompt";
+import { Expand, MessageCircle, X } from "lucide-react";
 import MessageStream from "./messageStream";
 import ChatInput from "./chatInput";
+import { useContext } from "react";
+import ChatContext from "@/context/chatContext";
+import DefaultPrompt from "./defaultPrompt";
+import Link from "next/link";
 
-export default function ChatInterface() {
-  const {
-    messages,
-    isLoading,
-    input,
-    setInput,
-    handleInputChange,
-    handleSubmit,
-    error,
-  } = useChat({ keepLastMessageOnError: true });
+type Props =
+  | { isFloatingHeader?: false }
+  | {
+      isFloatingHeader: true;
+      setIsChatOpen: (isOpen: boolean) => void;
+    };
+
+export default function ChatInterface(props: Props) {
+  const { messages, status, error, input, handleInputChange, handleSubmit } =
+    useContext(ChatContext)!;
 
   return (
-    <>
-      <div className="container h-full max-w-[768px] pt-24">
-        {/* 
-        If there are no messages, we will display the DefaultPrompt component.
-         */}
-        {messages.length === 0 ? (
-          <DefaultPrompt />
-        ) : (
-          <MessageStream
-            error={error}
-            isLoading={isLoading}
-            messages={messages}
-          />
+    <div className="flex flex-col h-full w-full">
+      <div className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white p-4 flex justify-between items-center">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+            <MessageCircle className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="font-semibold">Support Chat</h3>
+            <p className="text-xs opacity-90">We're here to help!</p>
+          </div>
+        </div>
+        {props.isFloatingHeader && (
+          <div className="flex items-center space-x-2">
+            <Link
+              href={"/chat"}
+              onClick={() => props.setIsChatOpen(false)}
+              className="hover:bg-white/20 p-1 rounded-full transition-colors"
+            >
+              <Expand className="w-5 h-5" />
+            </Link>
+            <button
+              onClick={() => props.setIsChatOpen(false)}
+              className="hover:bg-white/20 p-1 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         )}
       </div>
 
-      {/* 
-        This is the ChatInput component that we will create in the next step. 
-        It will be used to handle the user's input and send it to the chatbot.
-       */}
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-y-auto p-4 bg-gray-50 max-w-screen-lg w-full mx-auto">
+        {messages.length === 0 ? (
+          <DefaultPrompt />
+        ) : (
+          <MessageStream messages={messages} error={error} status={status} />
+        )}
+      </div>
+
+      {/* Chat Input */}
       <ChatInput
-        isLoading={isLoading}
-        handleSubmit={handleSubmit}
-        handleInputChange={handleInputChange}
         input={input}
+        handleInputChange={handleInputChange}
+        handleSubmit={handleSubmit}
+        isLoading={status === "submitted"}
       />
-    </>
+    </div>
   );
 }

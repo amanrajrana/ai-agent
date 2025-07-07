@@ -1,12 +1,9 @@
 "use client";
-
-import { CornerDownLeft } from "lucide-react";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
+import { Send } from "lucide-react";
 
 type ChatInputProps = {
   input: string;
-  handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: () => void;
   isLoading: boolean;
 };
@@ -17,35 +14,30 @@ export default function ChatInput({
   handleSubmit,
   isLoading,
 }: ChatInputProps) {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
   return (
-    <div className="w-full h-max fixed bottom-0 left-0 right-0">
-      <div className="bg-background rounded-t-xl border border-b-0 p-4 w-full mx-auto max-w-[700px] container">
-        <Card className="flex gap-4 p-4">
-          <textarea
-            rows={1}
-            tabIndex={0}
-            className="bg-background outline-none border-none w-full resize-y max-h-32 min-h-8"
-            placeholder="Type your message..."
-            required
-            minLength={2}
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit();
-              }
-            }}
-          />
-
-          <Button
-            onClick={handleSubmit}
-            disabled={!input || isLoading}
-            size={"icon"}
-          >
-            <CornerDownLeft size={14} />
-          </Button>
-        </Card>
+    <div className="p-4 bg-inherit max-w-screen-lg w-full mx-auto">
+      <div className="flex space-x-2">
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
+          placeholder="Type your message..."
+          className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        />
+        <button
+          onClick={handleSubmit}
+          disabled={!input.trim() || isLoading}
+          className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-3 rounded-full transition-all duration-200 hover:scale-105"
+        >
+          <Send className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
