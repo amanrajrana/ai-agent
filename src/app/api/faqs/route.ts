@@ -5,27 +5,12 @@ import { db } from "@/client";
 
 export async function GET() {
   try {
-    const teachers = await db.faculty.findMany({
-      orderBy: { id: "asc" },
-      select: {
-        id: true,
-        name: true,
-        qualification: true,
-        designation: true,
-        experience: true,
-        contact_email: true,
-        FacultySubject: {
-          select: {
-            subjectCode: true,
-          },
-        },
-      },
-    });
+    const faqs = await db.fAQ.findMany({ orderBy: { createdAt: "desc" } });
 
-    return NextResponse.json(teachers);
+    return NextResponse.json(faqs);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch teachers" },
+      { error: "Failed to fetch FAQs" },
       { status: 500 }
     );
   }
@@ -39,11 +24,11 @@ export async function POST(req: Request) {
 
   try {
     const data = await req.json();
-    const teacher = await db.faculty.create({ data });
-    return NextResponse.json(teacher);
+    const faq = await db.fAQ.create({ data });
+    return NextResponse.json(faq);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to create teacher" },
+      { error: "Failed to create FAQ" },
       { status: 500 }
     );
   }

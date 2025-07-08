@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import ChatHelpersProvider from "@/components/chatProvider";
+import { startSeedingDatabase } from "@/scripts/seed_database";
+import StoreProvider from "./StoreProvider";
+
+// startSeedingDatabase();
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
   generator: "v0.dev",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -29,7 +32,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ChatHelpersProvider>{children}</ChatHelpersProvider>
+            <StoreProvider>{children}</StoreProvider>
           </ThemeProvider>
         </body>
       </html>

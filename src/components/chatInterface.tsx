@@ -3,7 +3,7 @@
 import { Expand, MessageCircle, X } from "lucide-react";
 import MessageStream from "./messageStream";
 import ChatInput from "./chatInput";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ChatContext from "@/context/chatContext";
 import DefaultPrompt from "./defaultPrompt";
 import Link from "next/link";
@@ -18,6 +18,13 @@ type Props =
 export default function ChatInterface(props: Props) {
   const { messages, status, error, input, handleInputChange, handleSubmit } =
     useContext(ChatContext)!;
+
+  useEffect(() => {
+    if (error) {
+      // Handle error display logic here, e.g., show a toast notification
+      console.error("Chat error:", error);
+    }
+  }, [error]);
 
   return (
     <div className="flex flex-col h-full w-full">

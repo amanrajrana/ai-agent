@@ -1,7 +1,15 @@
 import { z } from "zod";
 import { getCourses, getSubjectsByCourseId } from "./course";
-import { CourseType, PaperType } from "@/prisma/generated/enums";
+import {
+  CourseType,
+  PaperType,
+  TicketPriority,
+} from "@/prisma/generated/enums";
 import { Prisma } from "@/client";
+import { createNewTicket } from "./ticket";
+import { getFaculties } from "./faculty";
+
+export * from "./ticket";
 
 export const availableTools = {
   getCoursesOffered: {
@@ -30,7 +38,9 @@ export const availableTools = {
           textBook: z
             .boolean()
             .default(false)
-            .describe("Include textbook? which should preferable for the subject"),
+            .describe(
+              "Include textbook? which should preferable for the subject"
+            ),
           Unit: z
             .object({
               select: z

@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { db } from "@/client";
 import { authOptions } from "@/lib/auth";
-import { db, Prisma } from "@/client";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 
 export async function PUT(
   req: Request,
@@ -13,18 +13,20 @@ export async function PUT(
   }
 
   try {
-    const id = Number(params.id);
-    const data = (await req.json()) as Prisma.FacultyUpdateInput;
-
-    const teacher = await db.faculty.update({
-      where: { id },
-      data,
+    const data = await req.json();
+    const importantLink = await db.importantLink.update({
+      where: { id: params.id },
+      data: {
+        title: data.title,
+        url: data.url,
+        category: data.category,
+        isActive: data.isActive,
+      },
     });
-    return NextResponse.json(teacher);
+    return NextResponse.json(importantLink);
   } catch (error) {
-    console.log("failed to update: ", error);
     return NextResponse.json(
-      { error: "Failed to update teacher" },
+      { error: "Failed to update Important Link" },
       { status: 500 }
     );
   }
@@ -40,14 +42,13 @@ export async function DELETE(
   }
 
   try {
-    const id = Number(params.id);
-    await db.faculty.delete({
-      where: { id },
+    await db.importantLink.delete({
+      where: { id: params.id },
     });
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ message: "FAQ deleted successfully" });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to delete teacher" },
+      { error: "Failed to delete FAQ" },
       { status: 500 }
     );
   }

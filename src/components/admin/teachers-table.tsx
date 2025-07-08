@@ -1,84 +1,90 @@
-"use client"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Edit, Trash2 } from "lucide-react"
+"use client";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Edit, Trash2 } from "lucide-react";
+import { Faculty, Prisma } from "@/prisma/generated/client";
+import { useAppSelector } from "@/lib/hooks";
+import Link from "next/link";
 
-interface Teacher {
-  id: string
-  name: string
-  email: string
-  subject: string
-  department: string
-  experience: number
-  qualifications: string
-  classes: string[]
-  phone?: string
-  office?: string
-}
-
-interface TeachersTableProps {
-  teachers: Teacher[]
-  onEdit: (teacher: Teacher) => void
-  onDelete: (id: string) => void
-}
-
-export function TeachersTable({ teachers, onEdit, onDelete }: TeachersTableProps) {
+export function TeachersTable() {
+  const teachersState = useAppSelector((state) => state.faculty);
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Id</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Subject</TableHead>
-            <TableHead>Department</TableHead>
+            <TableHead>Qualification</TableHead>
+            <TableHead>Designation</TableHead>
             <TableHead>Experience</TableHead>
             <TableHead>Classes</TableHead>
             <TableHead>Contact</TableHead>
-            <TableHead>Actions</TableHead>
+            {/* <TableHead>Actions</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {teachers.map((teacher) => (
+          {teachersState?.faculty.map((teacher) => (
             <TableRow key={teacher.id}>
-              <TableCell className="font-medium">{teacher.name}</TableCell>
-              <TableCell>{teacher.subject}</TableCell>
-              <TableCell>{teacher.department}</TableCell>
+              <TableCell className="font-medium">{teacher.id}</TableCell>
+              <TableCell>{teacher.name}</TableCell>
+              <TableCell>{teacher.qualification}</TableCell>
+              <TableCell>{teacher.designation}</TableCell>
               <TableCell>{teacher.experience} years</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  {teacher.classes.slice(0, 2).map((cls) => (
-                    <Badge key={cls} variant="outline" className="text-xs">
-                      {cls}
+                  {teacher.FacultySubject.slice(0, 2).map((cls) => (
+                    <Badge
+                      key={cls.subjectCode}
+                      variant="outline"
+                      className="text-xs"
+                    >
+                      {cls.subjectCode}
                     </Badge>
                   ))}
-                  {teacher.classes.length > 2 && (
+                  {teacher.FacultySubject.length > 2 && (
                     <Badge variant="outline" className="text-xs">
-                      +{teacher.classes.length - 2}
+                      +{teacher.FacultySubject.length - 2}
                     </Badge>
                   )}
                 </div>
               </TableCell>
               <TableCell>
-                <div className="text-sm">
-                  <div>{teacher.email}</div>
-                  {teacher.phone && <div className="text-muted-foreground">{teacher.phone}</div>}
-                </div>
+                <div className="text-sm">{teacher.contact_email}</div>
               </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => onEdit(teacher)}>
-                    <Edit className="h-4 w-4" />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    // onClick={() => onEdit(teacher)}
+                  >
+                    <Link href={`/admin/teachers/${teacher.id}`}>
+                      <Edit className="h-4 w-4" />
+                    </Link>
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => onDelete(teacher.id)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    // onClick={() => onDelete(teacher.id)}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

@@ -5,27 +5,14 @@ import { db } from "@/client";
 
 export async function GET() {
   try {
-    const teachers = await db.faculty.findMany({
-      orderBy: { id: "asc" },
-      select: {
-        id: true,
-        name: true,
-        qualification: true,
-        designation: true,
-        experience: true,
-        contact_email: true,
-        FacultySubject: {
-          select: {
-            subjectCode: true,
-          },
-        },
-      },
+    const importantLinks = await db.importantLink.findMany({
+      orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json(teachers);
+    return NextResponse.json(importantLinks);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch teachers" },
+      { error: "Failed to fetch Important Links" },
       { status: 500 }
     );
   }
@@ -39,11 +26,11 @@ export async function POST(req: Request) {
 
   try {
     const data = await req.json();
-    const teacher = await db.faculty.create({ data });
-    return NextResponse.json(teacher);
+    const importantLink = await db.importantLink.create({ data });
+    return NextResponse.json(importantLink, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to create teacher" },
+      { error: "Failed to create Important Link" },
       { status: 500 }
     );
   }

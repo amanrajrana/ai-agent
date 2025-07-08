@@ -1,8 +1,8 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./prisma";
 import bcrypt from "bcrypt";
 import type { UserRole } from "@/prisma/generated/enums";
+import { db } from "@/client";
 
 // Redefine global user type
 declare module "next-auth" {
@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const user = await prisma.user.findUnique({
+        const user = await db.user.findUnique({
           where: { email: credentials.email },
         });
 

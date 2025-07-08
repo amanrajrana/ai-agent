@@ -72,8 +72,61 @@ const FACULTIES_SEED: Prisma.FacultyCreateInput[] = [
   },
 ];
 
+const FACULTY_SUBJECTS_SEED: Prisma.FacultySubjectCreateManyInput[] = [
+  // SEM 1
+  {
+    subjectCode: "MCA C1001",
+    facultyId: 10,
+  },
+  {
+    subjectCode: "MCA C1002",
+    facultyId: 9,
+  },
+  {
+    subjectCode: "MCA C1003",
+    facultyId: 14,
+  },
+  {
+    subjectCode: "MCA C1004",
+    facultyId: 13,
+  },
+  {
+    subjectCode: "MCA C1005",
+    facultyId: 15,
+  },
+  {
+    subjectCode: "MCA C1006",
+    facultyId: 11,
+  },
+  // SEM 2
+  {
+    subjectCode: "MCA C2001",
+    facultyId: 13,
+  },
+  {
+    subjectCode: "MCA C2002",
+    facultyId: 12,
+  },
+  {
+    subjectCode: "MCA C2003",
+    facultyId: 15,
+  },
+  {
+    subjectCode: "MCA C2004",
+    facultyId: 9,
+  },
+  {
+    subjectCode: "MCA C2005",
+    facultyId: 11,
+  },
+];
+
 export async function seedFaculty(txPrisma: Prisma.TransactionClient) {
-  await txPrisma.faculty.createMany({
-    data: FACULTIES_SEED,
+  // await txPrisma.faculty.createMany({
+  //   data: FACULTIES_SEED,
+  // });
+
+  await txPrisma.facultySubject.createMany({
+    data: FACULTY_SUBJECTS_SEED,
   });
 }
