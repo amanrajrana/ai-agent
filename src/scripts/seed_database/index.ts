@@ -3,6 +3,8 @@ import { createUser } from "./admin_user";
 import { db } from "@/client";
 import { createCourses, createSubjects, createUnits } from "./course";
 import { seedFaculty } from "./faculty";
+import { createImportantLinks } from "./imp_link";
+import { createFAQ } from "./faq";
 
 export const startSeedingDatabase = async () => {
   // If the activeDbSeed flag is not set, skip seeding
@@ -23,9 +25,14 @@ export const startSeedingDatabase = async () => {
       // await createCourses(txPrisma);
       // await createSubjects(txPrisma);
       // await createUnits(txPrisma);
-      await seedFaculty(txPrisma);
+      // await seedFaculty(txPrisma);
+      // await createImportantLinks(txPrisma);
+      // await createFAQ(txPrisma);
+      console.log("[✅ Transaction Completed]");
     });
   } catch (error) {
     console.error("Error during database seeding:", error);
   }
 };
+
+startSeedingDatabase();

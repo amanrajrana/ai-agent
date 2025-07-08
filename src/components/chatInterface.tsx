@@ -4,9 +4,9 @@ import { Expand, MessageCircle, X } from "lucide-react";
 import MessageStream from "./messageStream";
 import ChatInput from "./chatInput";
 import { useContext, useEffect } from "react";
-import ChatContext from "@/context/chatContext";
 import DefaultPrompt from "./defaultPrompt";
 import Link from "next/link";
+import ChatContext from "@/hooks/use-chat";
 
 type Props =
   | { isFloatingHeader?: false }

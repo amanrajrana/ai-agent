@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { startSeedingDatabase } from "@/scripts/seed_database";
+import "@/scripts/seed_database";
 import StoreProvider from "./StoreProvider";
+import ChatHelpersProvider from "./chatProvider";
 
 // startSeedingDatabase();
 
@@ -32,7 +33,9 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <StoreProvider>{children}</StoreProvider>
+            <StoreProvider>
+              <ChatHelpersProvider>{children}</ChatHelpersProvider>
+            </StoreProvider>
           </ThemeProvider>
         </body>
       </html>
