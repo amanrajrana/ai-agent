@@ -41,6 +41,9 @@ export type EnvVars = {
   NEXTAUTH_SECRET: string;
   GOOGLE_GENERATIVE_AI_API_KEY: string;
   NODE_ENV: "development" | "production" | "test" | "staging";
+  EMAIL_USERNAME: string;
+  EMAIL_PASSWORD: string;
+  INTERNAL_SUPPORT_EMAIL: string;
 };
 
 export const envVars = EnvConfig.getInstance();

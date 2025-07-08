@@ -5,4 +5,5 @@ export default {
   author: "Your Name",
   license: "MIT",
   activeDbSeed: false,
+  sendEmail: true,
 };
