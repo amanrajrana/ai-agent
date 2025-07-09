@@ -1,3 +1,4 @@
+import { appConfig } from "@/config";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export default function DefaultPrompt() {
@@ -5,11 +6,11 @@ export default function DefaultPrompt() {
     <div>
       <Card className="mb-16">
         <CardHeader>
-          <CardTitle className="text-lg">I am AI</CardTitle>
+          <CardTitle className="text-lg">I am {appConfig.aiName}.</CardTitle>
         </CardHeader>
         <CardContent>
-          I&#39;m here to assist you with any queries you have. Feel free
-          to ask me anything.
+          I&#39;m here to assist you with any queries you have. Feel free to ask
+          me anything.
         </CardContent>
       </Card>
     </div>

@@ -1,4 +1,5 @@
 export default {
+  aiName: "Pragya",
   name: "College AI Assistant",
   description: "AI-powered assistant for college department information",
   version: "1.0.0",
